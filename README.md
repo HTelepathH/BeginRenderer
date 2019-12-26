@@ -10,6 +10,7 @@ a beginner soft renderer, following [tinyrenderer tutorials](https://github.com/
 
 ## compile
 under clang++:
+
 clang++ main.cpp -O3 BWindow.cpp BDevice.cpp BModel.cpp BTexture.cpp math/BMatrix.cpp BCamera.cpp
 
 ## third party
