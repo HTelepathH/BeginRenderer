@@ -350,8 +350,8 @@ void BDevice::TEST_show_shadow_shader()
     BlinnPhongShadowShader_world main_shader;
     main_shader.model = model;
     main_shader.cam = &camera;
-    main_shader.scam = &scam;
     main_shader.shadow_buffer = shadow_buffer;
+    main_shader.pers_cam_transform = scam.pers_mat * scam.cam_mat;
 
     ShadowShader_world shadow_shader;
     shadow_shader.model = model;

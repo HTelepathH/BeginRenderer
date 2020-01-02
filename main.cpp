@@ -11,10 +11,10 @@ int main()
     //device.TEST_show_model_wireframe();
 
     /* Phong shading diablo */
-    device.TEST_show_model_shader();
+    //device.TEST_show_model_shader();
     
     /* hard shadow african head */
-    //device.TEST_show_shadow_shader();
+    device.TEST_show_shadow_shader();
     
     return 0;
 }

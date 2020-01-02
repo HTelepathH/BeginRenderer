@@ -13,7 +13,6 @@ public:
     virtual ~BShader() = default;
     BModel* model;
     BCamera* cam;
-    BCamera* scam;
     float* shadow_buffer;
 };
 
@@ -88,7 +87,8 @@ class BlinnPhongShadowShader_world : public BShader
 public:
     float2 tex_coord[3]{};
     float3 light_pos = float3(1.0f);
-    
+    BMat pers_cam_transform{};
+
     /*world space pos */
     float3 vert_pos[3];
     float3 norm_pos[3];
@@ -120,7 +120,7 @@ public:
         float diffuse = fmax(0, dot(norm, light_dir));
         color = 0.5 * diffuse * tex_color;
 
-        float3 proj_pos = (scam->pers_mat * scam->cam_mat * float4(pos)).homogenous().no_w();
+        float3 proj_pos = (pers_cam_transform * float4(pos)).homogenous().no_w();
         if(!is_shadowed(proj_pos))
         { 
             float3 half = (light_dir - cam->look_vec()).normalize();
@@ -141,7 +141,7 @@ private:
         float3 screen_pos = (cam->vp_mat * float4(pos)).no_w(); 
         int col = static_cast<int>(screen_pos.x());
         int row = static_cast<int>(screen_pos.y());
-        if(pos.z() + 3e-2 < shadow_buffer[cam->width * row + col])
+        if(pos.z() + 0.014 < shadow_buffer[cam->width * row + col])
             return true;
         else
             return false;
