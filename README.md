@@ -1,5 +1,5 @@
 # BeginRenderer
-a beginner soft renderer, following [tinyrenderer tutorials](https://github.com/ssloy/tinyrenderer/wiki).
+a real-time soft renderer, following [tinyrenderer tutorials](https://github.com/ssloy/tinyrenderer/wiki).
 
 ## features
 - orbital camera with zoom

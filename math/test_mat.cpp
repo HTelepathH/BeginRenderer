@@ -1,8 +1,6 @@
-#ifndef BMATRIX_H
-#define BMATRIX_H
-
-#include <cmath>
-#include "vec3.h"
+#include <iostream>
+#include <cstring>
+#include <iomanip>
 
 template<uint8_t N>
 class BMat
@@ -111,37 +109,6 @@ public:
     float mat[N * N];
 };
 
-using BMat4 = BMat<4>;
-using BMat3 = BMat<3>;
-
-class CamMat : public BMat
-{
-public:
-    CamMat(float3 pos, float3 look_dir);
-};
-
-class VPMat : public BMat
-{
-public:
-    VPMat(int w, int h);
-
-};
-
-    void setVPMat(int w, int h);
-    void setPersMat(float fov, int w, int h, float n = 0.1, float f = 100.0);
-    void setModelMat(time_t rotate);
-
-class PersMat : public BMat
-{
-public:
-    PersMat(float fov, int w, int h, float n = 0.1, float f = 100.0);
-};
-
-class ModelMat
-{
-    ModelMat(time_t rotate, float scale = 1.0f);
-};
-
 template<uint8_t N>
 std::ostream& operator<<(std::ostream& os, const BMat<N>& m)
 {
@@ -155,63 +122,23 @@ std::ostream& operator<<(std::ostream& os, const BMat<N>& m)
     return os;
 }
 
-
-inline BMat operator*(const BMat& a, const BMat& b)
+int main()
 {
-    BMat temp(a.row);
-    if(a.col != b.row)
-    {
-        std::cout << "BMat: dimension dismatch, operator '*' " << std::endl;
-    }
-    else
-    {
-        for(size_t r = 0; r < a.row; ++r)
-        {
-            for(size_t c = 0; c < a.row; ++c)
-            {
-                for(size_t k = 0; k < a.row; ++k)
-                {
-                    temp[r * a.col + c] += a[r * a.col + k] * b[k * a.col + c];                  
-                }
-            }
-        }
-    }
-    return temp;    
+    BMat<4> m;
+    BMat<4> cm(m);
+    m[2][1] = 6.7;
+    float c  = m[2][2];
+    std::cout << m << std::endl;
+    std::cout << m[2][1] << " " << c << std::endl;
+    std::cout << "adjoint" << std::endl;
+    std::cout << m.adjoint() << std::endl;
+    std::cout << "inverse" << std::endl;
+    std::cout << m.inverse() << std::endl;
+    std::cout << "inverse_transpose" << std::endl;
+    std::cout << m.inverse_transpose() << std::endl;
+    std::cout << "transpose" << std::endl;
+    std::cout << m.transpose() << std::endl;
+
+    
 }
 
-inline float4 operator*(const BMat& a, const float4& b)
-{
-    float4 temp(0);
-    for(size_t r = 0; r < a.row; ++r)
-    {
-        for(size_t k = 0; k < a.row; ++k)
-            temp[r] += a[r * a.col + k] * b[k];                  
-    }
-    return temp;      
-}
-
-inline float3 operator*(const BMat& a, const float3& b)
-{
-    if(a.row!= 3) return float3(0);
-    float3 temp{};
-    for(size_t r = 0; r < 3; ++r)
-    {
-        for(size_t k = 0; k < 3; ++k)
-            temp[r] += a[r * a.col + k] * b[k];                  
-    }
-    return temp;      
-}
-
-inline float clamp(float f)
-{
-    if (f > 1.0f) f = 1.0f;
-    if (f < 0.0f) f = 0.0f;
-    return f;
-}
-
-inline float3 clamp(float3 f)
-{
-    return float3(clamp(f[0]), clamp(f[1]), clamp(f[2]));
-}
-
-#endif
